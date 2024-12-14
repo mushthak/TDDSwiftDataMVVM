@@ -11,7 +11,7 @@ protocol UserStore {
     func retrieveAll() throws
 }
 
-class MockUserStore: UserStore {
+class UserStoreSpy: UserStore {
     enum ReceivedMessage {
         case retrieve
     }
@@ -100,8 +100,8 @@ struct LoadUserFromCacheUseCaseTests {
     }
     
     //MARK: Helpers
-    private func makeSUT(with result: Result<[LocalUserItem], MockUserStore.Error> = .success([])) -> (LocaleUserLoader, MockUserStore) {
-        let store = MockUserStore(result: result)
+    private func makeSUT(with result: Result<[LocalUserItem], UserStoreSpy.Error> = .success([])) -> (LocaleUserLoader, UserStoreSpy) {
+        let store = UserStoreSpy(result: result)
         let sut = LocaleUserLoader(store: store)
         
         return (sut, store)
