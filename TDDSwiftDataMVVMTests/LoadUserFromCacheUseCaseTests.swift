@@ -81,7 +81,7 @@ struct LoadUserFromCacheUseCaseTests {
     @Test func test_loadUser_requestCacheRetrieval() async throws {
         let (sut, store) = makeSUT()
         
-        try sut.loadUsers()
+        _ = try sut.loadUsers()
         
         #expect(store.receivedMessages == [.retrieve])
     }
@@ -89,8 +89,8 @@ struct LoadUserFromCacheUseCaseTests {
     @Test func test_loadUserTwice_requestCacheRetrievalTwice() async throws {
         let (sut, store) = makeSUT()
         
-        try sut.loadUsers()
-        try sut.loadUsers()
+        _ = try sut.loadUsers()
+        _ = try sut.loadUsers()
         
         #expect(store.receivedMessages == [.retrieve, .retrieve])
     }
@@ -99,7 +99,7 @@ struct LoadUserFromCacheUseCaseTests {
         let (sut, _) = makeSUT(with: .failure(.retrievalError))
         
         do {
-            try sut.loadUsers()
+            _ = try sut.loadUsers()
             #expect(Bool(false), "Expect to throw \(LocaleUserLoader.Error.retrieval) error but got success instead")
         } catch  {
             #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.retrieval)
