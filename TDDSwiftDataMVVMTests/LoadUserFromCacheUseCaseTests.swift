@@ -7,12 +7,20 @@
 
 import Testing
 
-protocol UserStore {}
+protocol UserStore {
+    func retrieveAll()
+}
 
 class MockUserStore: UserStore {
-    enum ReceivedMessage {}
+    enum ReceivedMessage {
+        case retrieve
+    }
     
     private(set) var receivedMessages = [ReceivedMessage]()
+    
+    func retrieveAll() {
+        receivedMessages.append(.retrieve)
+    }
 }
 
 class LocaleUserLoader {
@@ -20,6 +28,10 @@ class LocaleUserLoader {
     
     init(store: UserStore) {
         self.store = store
+    }
+    
+    func loadUsers() {
+        store.retrieveAll()
     }
 }
 
@@ -31,6 +43,15 @@ struct LoadUserFromCacheUseCaseTests {
         let _ = LocaleUserLoader(store: store)
         
         #expect(store.receivedMessages.isEmpty)
+    }
+    
+    @Test func test_loadUser_requestCacheRetrieval() async throws {
+        let store = MockUserStore()
+        let sut = LocaleUserLoader(store: store)
+        
+        sut.loadUsers()
+        
+        #expect(store.receivedMessages == [.retrieve])
     }
     
 }
