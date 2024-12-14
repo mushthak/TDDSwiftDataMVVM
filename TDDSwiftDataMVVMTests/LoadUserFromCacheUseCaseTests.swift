@@ -7,72 +7,7 @@
 
 import Testing
 import Foundation
-
-protocol UserStore {
-    func retrieveAll() async throws -> [LocalUserItem]
-}
-
-class UserStoreSpy: UserStore {
-    enum ReceivedMessage {
-        case retrieve
-    }
-    
-    enum Error: Swift.Error {
-        case retrievalError
-    }
-    
-    private(set) var receivedMessages = [ReceivedMessage]()
-    
-    private var result: Result<[LocalUserItem], Error>
-    
-    init(result: Result<[LocalUserItem], Error>) {
-        self.result = result
-    }
-    
-    func retrieveAll() throws -> [LocalUserItem] {
-        receivedMessages.append(.retrieve)
-        return try result.get()
-    }
-}
-
-protocol UserLoader {
-    func loadUsers() async throws -> [User]
-}
-
-class LocaleUserLoader: UserLoader {
-    let store: UserStore
-    
-    enum Error: Swift.Error {
-        case retrieval
-    }
-    
-    init(store: UserStore) {
-        self.store = store
-    }
-    
-    func loadUsers() async throws -> [User] {
-        do {
-            return try await store.retrieveAll().toModels()
-        } catch  {
-            throw Error.retrieval
-        }
-    }
-}
-
-private extension Array where Element == LocalUserItem {
-    func toModels() -> [User] {
-        return map{User(id: $0.id)}
-    }
-}
-
-struct LocalUserItem {
-    let id: UUID
-}
-
-struct User: Equatable {
-    let id: UUID
-}
-
+import TDDSwiftDataMVVM
 
 struct LoadUserFromCacheUseCaseTests {
     
