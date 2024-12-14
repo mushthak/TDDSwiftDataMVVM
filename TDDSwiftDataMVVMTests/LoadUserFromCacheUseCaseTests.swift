@@ -6,9 +6,10 @@
 //
 
 import Testing
+import Foundation
 
 protocol UserStore {
-    func retrieveAll() throws
+    func retrieveAll() throws -> [LocalUserItem]
 }
 
 class UserStoreSpy: UserStore {
@@ -28,15 +29,9 @@ class UserStoreSpy: UserStore {
         self.result = result
     }
     
-    func retrieveAll() throws {
+    func retrieveAll() throws -> [LocalUserItem] {
         receivedMessages.append(.retrieve)
-        
-        switch result {
-        case .success:
-            return
-        case .failure:
-            throw Error.retrievalError
-        }
+        return try result.get()
     }
 }
 
@@ -51,16 +46,28 @@ class LocaleUserLoader {
         self.store = store
     }
     
-    func loadUsers() throws {
+    func loadUsers() throws -> [User] {
         do {
-            try store.retrieveAll()
+            return try store.retrieveAll().toModels()
         } catch  {
             throw Error.retrieval
         }
     }
 }
 
-struct LocalUserItem {}
+private extension Array where Element == LocalUserItem {
+    func toModels() -> [User] {
+        return map{User(id: $0.id)}
+    }
+}
+
+struct LocalUserItem {
+    let id: UUID
+}
+
+struct User: Equatable {
+    let id: UUID
+}
 
 
 struct LoadUserFromCacheUseCaseTests {
@@ -69,6 +76,7 @@ struct LoadUserFromCacheUseCaseTests {
         let (_, store) = makeSUT()
         #expect(store.receivedMessages.isEmpty)
     }
+    
     
     @Test func test_loadUser_requestCacheRetrieval() async throws {
         let (sut, store) = makeSUT()
@@ -97,6 +105,14 @@ struct LoadUserFromCacheUseCaseTests {
             #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.retrieval)
         }
         
+    }
+    
+    @Test func test_loadUser_deliversEmptyUsersWhenCacheIsEmpty() async throws {
+        let (sut, _) = makeSUT(with: .success([]))
+        
+        let result = try sut.loadUsers()
+        
+        #expect(result == [])
     }
     
     //MARK: Helpers
