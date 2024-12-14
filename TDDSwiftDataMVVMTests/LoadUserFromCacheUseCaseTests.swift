@@ -115,12 +115,34 @@ struct LoadUserFromCacheUseCaseTests {
         #expect(result == [])
     }
     
+    @Test func test_loadUser_deliversCachedUsersOnNonEmptyCache() async throws {
+        let (stubUsers, expectedUsers) = makeTestUsers()
+        let (sut, _) = makeSUT(with: .success(stubUsers))
+        
+        do {
+            let result = try await sut.loadUsers()
+            #expect(result == expectedUsers)
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
     //MARK: Helpers
     private func makeSUT(with result: Result<[LocalUserItem], UserStoreSpy.Error> = .success([])) -> (LocaleUserLoader, UserStoreSpy) {
         let store = UserStoreSpy(result: result)
         let sut = LocaleUserLoader(store: store)
         
         return (sut, store)
+    }
+    
+    private func makeTestUsers() -> ([LocalUserItem], [User]) {
+        let models = [makeUniqueUser(), makeUniqueUser()]
+        let local = models.map({LocalUserItem(id: $0.id)})
+        return (local, models)
+    }
+    
+    private func makeUniqueUser() -> User {
+        return User(id: UUID())
     }
     
 }
