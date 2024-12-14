@@ -39,15 +39,12 @@ class LocaleUserLoader {
 struct LoadUserFromCacheUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {
-        let store = MockUserStore()
-        let _ = LocaleUserLoader(store: store)
-        
+        let (_, store) = makeSUT()
         #expect(store.receivedMessages.isEmpty)
     }
     
     @Test func test_loadUser_requestCacheRetrieval() async throws {
-        let store = MockUserStore()
-        let sut = LocaleUserLoader(store: store)
+        let (sut, store) = makeSUT()
         
         sut.loadUsers()
         
@@ -55,13 +52,20 @@ struct LoadUserFromCacheUseCaseTests {
     }
     
     @Test func test_loadUserTwice_requestCacheRetrievalTwice() async throws {
-        let store = MockUserStore()
-        let sut = LocaleUserLoader(store: store)
+        let (sut, store) = makeSUT()
         
         sut.loadUsers()
         sut.loadUsers()
         
         #expect(store.receivedMessages == [.retrieve, .retrieve])
+    }
+    
+    //MARK: Helpers
+    private func makeSUT() -> (LocaleUserLoader, MockUserStore) {
+        let store = MockUserStore()
+        let sut = LocaleUserLoader(store: store)
+        
+        return (sut, store)
     }
     
 }
