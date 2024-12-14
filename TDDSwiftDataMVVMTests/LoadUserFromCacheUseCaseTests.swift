@@ -35,7 +35,11 @@ class UserStoreSpy: UserStore {
     }
 }
 
-class LocaleUserLoader {
+protocol UserLoader {
+    func loadUsers() async throws -> [User]
+}
+
+class LocaleUserLoader: UserLoader {
     let store: UserStore
     
     enum Error: Swift.Error {
