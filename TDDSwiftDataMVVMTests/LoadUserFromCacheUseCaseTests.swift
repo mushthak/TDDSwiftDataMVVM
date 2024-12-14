@@ -54,4 +54,14 @@ struct LoadUserFromCacheUseCaseTests {
         #expect(store.receivedMessages == [.retrieve])
     }
     
+    @Test func test_loadUserTwice_requestCacheRetrievalTwice() async throws {
+        let store = MockUserStore()
+        let sut = LocaleUserLoader(store: store)
+        
+        sut.loadUsers()
+        sut.loadUsers()
+        
+        #expect(store.receivedMessages == [.retrieve, .retrieve])
+    }
+    
 }
