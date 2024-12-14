@@ -9,7 +9,7 @@ import Testing
 import Foundation
 
 protocol UserStore {
-    func retrieveAll() throws -> [LocalUserItem]
+    func retrieveAll() async throws -> [LocalUserItem]
 }
 
 class UserStoreSpy: UserStore {
@@ -46,9 +46,9 @@ class LocaleUserLoader {
         self.store = store
     }
     
-    func loadUsers() throws -> [User] {
+    func loadUsers() async throws -> [User] {
         do {
-            return try store.retrieveAll().toModels()
+            return try await store.retrieveAll().toModels()
         } catch  {
             throw Error.retrieval
         }
@@ -81,7 +81,7 @@ struct LoadUserFromCacheUseCaseTests {
     @Test func test_loadUser_requestCacheRetrieval() async throws {
         let (sut, store) = makeSUT()
         
-        _ = try sut.loadUsers()
+        _ = try await sut.loadUsers()
         
         #expect(store.receivedMessages == [.retrieve])
     }
@@ -89,8 +89,8 @@ struct LoadUserFromCacheUseCaseTests {
     @Test func test_loadUserTwice_requestCacheRetrievalTwice() async throws {
         let (sut, store) = makeSUT()
         
-        _ = try sut.loadUsers()
-        _ = try sut.loadUsers()
+        _ = try await sut.loadUsers()
+        _ = try await sut.loadUsers()
         
         #expect(store.receivedMessages == [.retrieve, .retrieve])
     }
@@ -99,7 +99,7 @@ struct LoadUserFromCacheUseCaseTests {
         let (sut, _) = makeSUT(with: .failure(.retrievalError))
         
         do {
-            _ = try sut.loadUsers()
+            _ = try await sut.loadUsers()
             #expect(Bool(false), "Expect to throw \(LocaleUserLoader.Error.retrieval) error but got success instead")
         } catch  {
             #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.retrieval)
@@ -110,7 +110,7 @@ struct LoadUserFromCacheUseCaseTests {
     @Test func test_loadUser_deliversEmptyUsersWhenCacheIsEmpty() async throws {
         let (sut, _) = makeSUT(with: .success([]))
         
-        let result = try sut.loadUsers()
+        let result = try await sut.loadUsers()
         
         #expect(result == [])
     }
