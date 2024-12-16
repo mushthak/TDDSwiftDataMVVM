@@ -25,22 +25,9 @@
 		29FEFB3A2D05FA45008BC0CC /* TDDSwiftDataMVVMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDDSwiftDataMVVMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		29FEFB422D05FA45008BC0CC /* Exceptions for "TDDSwiftDataMVVM" folder in "TDDSwiftDataMVVM" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				TDDSwiftDataMVVM.h,
-			);
-			target = 29FEFB2F2D05FA45008BC0CC /* TDDSwiftDataMVVM */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		29FEFB322D05FA45008BC0CC /* TDDSwiftDataMVVM */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				29FEFB422D05FA45008BC0CC /* Exceptions for "TDDSwiftDataMVVM" folder in "TDDSwiftDataMVVM" target */,
-			);
 			path = TDDSwiftDataMVVM;
 			sourceTree = "<group>";
 		};

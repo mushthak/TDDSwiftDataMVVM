@@ -4,7 +4,7 @@
 //
 //  Created by Mushthak Ebrahim on 14/12/24.
 //
-
+import Foundation
 
 public struct LocalUserItem {
     let id: UUID
