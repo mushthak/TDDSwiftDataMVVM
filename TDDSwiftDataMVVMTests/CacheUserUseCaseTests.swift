@@ -9,26 +9,6 @@ import Foundation
 import Testing
 import TDDSwiftDataMVVM
 
-protocol UserCache {
-    func saveUser(user: User) async throws
-}
-
-extension LocaleUserLoader: UserCache {
-    func saveUser(user: User) async throws {
-        do {
-            try await store.insert(user: user.toLocal)
-        } catch  {
-            throw Error.insertion
-        }
-    }
-}
-
-private extension User {
-    var toLocal: LocalUserItem {
-        LocalUserItem(id: self.id)
-    }
-}
-
 struct CacheUserUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {
@@ -39,16 +19,16 @@ struct CacheUserUseCaseTests {
     @Test func test_saveUser_requestsNewCacheInsertion() async throws {
         let (sut, store) = makeSUT()
         let user = makeUniqueUser()
-        try await sut.saveUser(user: user)
+        try await sut.saveUser(user: user.model)
         
-        #expect(store.receivedMessages == [.insert(user: user.toLocal)])
+        #expect(store.receivedMessages == [.insert(user: user.local)])
     }
     
     @Test func test_saveUser_failsOnInsertionError() async {
         let (sut, _) = makeSUT(with: .failure(.insertionError))
         
         do {
-            try await sut.saveUser(user: makeUniqueUser())
+            try await sut.saveUser(user: makeUniqueUser().model)
             #expect(Bool(false), "Expect to throw \(LocaleUserLoader.Error.insertion) error but got success instead")
         } catch  {
             #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.insertion)
@@ -59,7 +39,7 @@ struct CacheUserUseCaseTests {
         let (sut, _) = makeSUT()
         
         do {
-            try await sut.saveUser(user: makeUniqueUser())
+            try await sut.saveUser(user: makeUniqueUser().model)
         } catch  {
             #expect(Bool(false), "Expect to succeed but got \(error) error instead")
         }

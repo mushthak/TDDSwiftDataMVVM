@@ -7,12 +7,20 @@
 import Foundation
 import TDDSwiftDataMVVM
 
-func makeUniqueUser() -> User {
-    return User(id: UUID())
+func makeUniqueUser() -> (model: User, local: LocalUserItem) {
+    let user = User(id: UUID())
+    let localUserItem = user.toLocal
+    return (user, localUserItem)
 }
 
 func makeTestUsers() -> ([LocalUserItem], [User]) {
-    let models = [makeUniqueUser(), makeUniqueUser()]
+    let models = [makeUniqueUser().model, makeUniqueUser().model]
     let local = models.map({LocalUserItem(id: $0.id)})
     return (local, models)
+}
+
+private extension User {
+    var toLocal: LocalUserItem {
+        LocalUserItem(id: self.id)
+    }
 }

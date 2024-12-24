@@ -5,7 +5,7 @@
 //  Created by Mushthak Ebrahim on 14/12/24.
 //
 
-
+//MARK: UserLoader
 public class LocaleUserLoader: UserLoader {
     public let store: UserStore
     
@@ -24,6 +24,24 @@ public class LocaleUserLoader: UserLoader {
         } catch  {
             throw Error.retrieval
         }
+    }
+}
+
+//MARK: UserCache
+extension LocaleUserLoader: UserCache {
+    public func saveUser(user: User) async throws {
+        do {
+            try await store.insert(user: user.toLocal)
+        } catch  {
+            throw Error.insertion
+        }
+    }
+}
+
+//MARK: Helpers
+private extension User {
+    var toLocal: LocalUserItem {
+        LocalUserItem(id: self.id)
     }
 }
 
