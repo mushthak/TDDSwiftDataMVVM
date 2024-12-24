@@ -138,4 +138,4 @@ User
 ---
 ## Architecture
 
-![Architecure](Architecture.drawio.svg)
+![Architecure](Architecture.png)
