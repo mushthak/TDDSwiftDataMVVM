@@ -8,4 +8,5 @@
 
 protocol UserCache {
     func saveUser(user: User) async throws
+    func deleteUser() async throws
 }

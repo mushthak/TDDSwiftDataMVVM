@@ -37,6 +37,14 @@ extension LocaleUserLoader: UserCache {
             throw Error.insertion
         }
     }
+    
+    public func deleteUser() async throws {
+        do {
+            try await store.remove()
+        } catch  {
+            throw Error.deletion
+        }
+    }
 }
 
 //MARK: Helpers

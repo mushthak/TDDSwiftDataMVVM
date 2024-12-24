@@ -8,16 +8,6 @@
 import Testing
 import TDDSwiftDataMVVM
 
-extension LocaleUserLoader {
-    func deleteUser() async throws {
-        do {
-            try await store.remove()
-        } catch  {
-            throw Error.deletion
-        }
-    }
-}
-
 struct DeleteUserFromCacheUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async {
