@@ -9,7 +9,11 @@ import Foundation
 import Testing
 import TDDSwiftDataMVVM
 
-extension LocaleUserLoader {
+protocol UserCache {
+    func saveUser(user: User) async throws
+}
+
+extension LocaleUserLoader: UserCache {
     func saveUser(user: User) async throws {
         do {
             try await store.insert(user: user.toLocal)
@@ -26,7 +30,7 @@ private extension User {
 }
 
 struct CacheUserUseCaseTests {
-
+    
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {
         let (_, store) = makeSUT()
         #expect(store.receivedMessages.isEmpty)
