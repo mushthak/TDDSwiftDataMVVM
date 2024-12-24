@@ -17,15 +17,17 @@ struct DeleteUserFromCacheUseCaseTests {
     
     @Test func test_deleteUser_requestsDeleteFromStore() async throws {
         let (sut, store) = makeSUT()
-        try await sut.deleteUser()
+        let user = makeUniqueUser()
+        try await sut.deleteUser(user: user.model)
         
-        #expect(store.receivedMessages.contains(.delete))
+        #expect(store.receivedMessages.contains(.delete(user: user.local)))
     }
     
     @Test func test_deleteUser_failsOnDeletionError() async {
         let (sut, _) = makeSUT(with: .failure(.deletionError))
         do {
-            try await sut.deleteUser()
+            let user = makeUniqueUser()
+            try await sut.deleteUser(user: user.model)
             #expect(Bool(false), "Expect to throw \(LocaleUserLoader.Error.deletion) error but got success instead")
         } catch  {
             #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.deletion)
@@ -36,7 +38,8 @@ struct DeleteUserFromCacheUseCaseTests {
     @Test func test_deleteUser_successfullyDeletesUserFromStore() async  {
         let (sut, _) = makeSUT(with: .success([]))
         do {
-            try await sut.deleteUser()
+            let user = makeUniqueUser()
+            try await sut.deleteUser(user: user.model)
         } catch  {
             #expect(Bool(false), "Expect to succeed but got \(error) error instead")
         }

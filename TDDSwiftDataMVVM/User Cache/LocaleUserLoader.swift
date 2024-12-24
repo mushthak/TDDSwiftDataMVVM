@@ -35,9 +35,9 @@ public class LocaleUserLoader: UserCache {
         }
     }
     
-    public func deleteUser() async throws {
+    public func deleteUser(user: User) async throws {
         do {
-            try await store.remove()
+            try await store.remove(user: user.toLocal)
         } catch  {
             throw Error.deletion
         }
