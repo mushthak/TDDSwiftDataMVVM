@@ -7,8 +7,10 @@
 import TDDSwiftDataMVVM
 
 class UserStoreSpy: UserStore {
+    
     enum ReceivedMessage {
         case retrieve
+        case insert
     }
     
     enum Error: Swift.Error {
@@ -26,5 +28,9 @@ class UserStoreSpy: UserStore {
     func retrieveAll() throws -> [LocalUserItem] {
         receivedMessages.append(.retrieve)
         return try result.get()
+    }
+    
+    func insert() async {
+        receivedMessages.append(.insert)
     }
 }

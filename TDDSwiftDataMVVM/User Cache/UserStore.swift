@@ -8,4 +8,5 @@
 
 public protocol UserStore {
     func retrieveAll() async throws -> [LocalUserItem]
+    func insert() async
 }
