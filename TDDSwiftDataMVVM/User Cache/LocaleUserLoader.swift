@@ -6,7 +6,7 @@
 //
 
 //MARK: UserLoader
-public class LocaleUserLoader: UserLoader {
+public class LocaleUserLoader: UserCache {
     public let store: UserStore
     
     public enum Error: Swift.Error {
@@ -26,10 +26,7 @@ public class LocaleUserLoader: UserLoader {
             throw Error.retrieval
         }
     }
-}
-
-//MARK: UserCache
-extension LocaleUserLoader: UserCache {
+    
     public func saveUser(user: User) async throws {
         do {
             try await store.insert(user: user.toLocal)
