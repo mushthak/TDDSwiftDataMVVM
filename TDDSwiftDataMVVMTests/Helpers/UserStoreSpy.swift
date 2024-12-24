@@ -11,6 +11,7 @@ class UserStoreSpy: UserStore {
     enum ReceivedMessage: Equatable {
         case retrieve
         case insert(user: LocalUserItem)
+        case delete
     }
     
     enum Error: Swift.Error {
@@ -34,5 +35,9 @@ class UserStoreSpy: UserStore {
     func insert(user: LocalUserItem) async throws {
         receivedMessages.append(.insert(user: user))
         _ = try result.get()
+    }
+    
+    func remove() async {
+        receivedMessages.append(.delete)
     }
 }
