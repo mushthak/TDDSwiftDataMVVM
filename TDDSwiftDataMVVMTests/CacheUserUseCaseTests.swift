@@ -9,8 +9,12 @@ import Testing
 import TDDSwiftDataMVVM
 
 extension LocaleUserLoader {
-    func saveUser() async {
-        await store.insert()
+    func saveUser() async throws {
+        do {
+            try await store.insert()
+        } catch  {
+            throw Error.insertion
+        }
     }
 }
 
@@ -21,11 +25,22 @@ struct CacheUserUseCaseTests {
         #expect(store.receivedMessages.isEmpty)
     }
     
-    @Test func test_saveUser_requestsNewCacheInsertion() async {
+    @Test func test_saveUser_requestsNewCacheInsertion() async throws {
         let (sut, store) = makeSUT()
-        await sut.saveUser()
+        try await sut.saveUser()
         
         #expect(store.receivedMessages == [.insert])
+    }
+    
+    @Test func test_saveUser_failsOnInsertionError() async {
+        let (sut, _) = makeSUT(with: .failure(.insertionError))
+        
+        do {
+            try await sut.saveUser()
+            #expect(Bool(false), "Expect to throw \(LocaleUserLoader.Error.insertion) error but got success instead")
+        } catch  {
+            #expect(error as? LocaleUserLoader.Error == LocaleUserLoader.Error.insertion)
+        }
     }
     
     //MARK: Helpers
