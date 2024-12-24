@@ -43,6 +43,15 @@ struct DeleteUserFromCacheUseCaseTests {
     }
     
     
+    @Test func test_deleteUser_successfullyDeletesUserFromStore() async  {
+        let (sut, _) = makeSUT(with: .success([]))
+        do {
+            try await sut.deleteUser()
+        } catch  {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
     //MARK: Helpers
     private func makeSUT(with result: Result<[LocalUserItem], UserStoreSpy.Error> = .success([])) -> (LocaleUserLoader, UserStoreSpy) {
         let store = UserStoreSpy(result: result)
