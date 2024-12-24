@@ -68,9 +68,4 @@ struct CacheUserUseCaseTests {
         
         return (sut, store)
     }
-    
-    private func makeUniqueUser() -> User {
-        return User(id: UUID())
-    }
-
 }

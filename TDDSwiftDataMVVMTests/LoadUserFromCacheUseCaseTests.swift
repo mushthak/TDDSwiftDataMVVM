@@ -73,15 +73,4 @@ struct LoadUserFromCacheUseCaseTests {
         
         return (sut, store)
     }
-    
-    private func makeTestUsers() -> ([LocalUserItem], [User]) {
-        let models = [makeUniqueUser(), makeUniqueUser()]
-        let local = models.map({LocalUserItem(id: $0.id)})
-        return (local, models)
-    }
-    
-    private func makeUniqueUser() -> User {
-        return User(id: UUID())
-    }
-    
 }
