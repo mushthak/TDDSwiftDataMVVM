@@ -12,6 +12,7 @@ public class LocaleUserLoader: UserLoader {
     public enum Error: Swift.Error {
         case retrieval
         case insertion
+        case deletion
     }
     
     public init(store: UserStore) {

@@ -17,6 +17,7 @@ class UserStoreSpy: UserStore {
     enum Error: Swift.Error {
         case retrievalError
         case insertionError
+        case deletionError
     }
     
     private(set) var receivedMessages = [ReceivedMessage]()
@@ -37,7 +38,8 @@ class UserStoreSpy: UserStore {
         _ = try result.get()
     }
     
-    func remove() async {
+    func remove() async throws {
         receivedMessages.append(.delete)
+        _ = try result.get()
     }
 }
