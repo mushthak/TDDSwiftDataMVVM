@@ -10,56 +10,6 @@ import Testing
 import SwiftData
 import TDDSwiftDataMVVM
 
-@Model
-final class ManagedUser {
-    var id: UUID
-    
-    init(id: UUID) {
-        self.id = id
-    }
-    
-    var local: LocalUserItem {
-        return LocalUserItem(id: id)
-    }
-    
-    static func managedUser(from user: LocalUserItem) -> ManagedUser {
-        return ManagedUser(id: user.id)
-    }
-}
-
-@ModelActor
-actor SwiftDataStore: UserStore {
-    func retrieveAll() async throws -> [LocalUserItem] {
-        let cache = try findUserCache()
-        return cache.compactMap{ $0.local }
-    }
-    
-    func insert(user: LocalUserItem) async throws {
-        let managedUser = ManagedUser.managedUser(from: user)
-        modelContext.insert(managedUser)
-        try modelContext.save()
-    }
-    
-    func remove(user: LocalUserItem) async throws {
-        guard let managedUser = try findManagedUser(for: user.id) else { return }
-        modelContext.delete(managedUser)
-        try modelContext.save()
-    }
-    
-    //MARK: Helpers
-    private func findUserCache() throws -> [ManagedUser] {
-        let descriptor = FetchDescriptor<ManagedUser>()
-        return try modelContext.fetch(descriptor)
-    }
-    
-    private func findManagedUser(for id: UUID) throws -> ManagedUser? {
-        let descriptor = FetchDescriptor<ManagedUser>(
-            predicate: #Predicate { $0.id == id }
-        )
-        return try modelContext.fetch(descriptor).first
-    }
-}
-
 struct SwiftDataUserStoreTests {
 
     @Test func test_retrieveAll_deliversEmptyOnEmptyCache() async throws {
