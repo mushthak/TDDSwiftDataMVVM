@@ -114,6 +114,14 @@ struct SwiftDataUserStoreTests {
         }
     }
     
+    @Test func test_delete_deliversNoErrorOnEmptyCache() async {
+        let sut = await makeSUT()
+        do {
+            try await sut.remove(user: makeUniqueUser().local)
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
     
     //MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) async -> SwiftDataStore {
