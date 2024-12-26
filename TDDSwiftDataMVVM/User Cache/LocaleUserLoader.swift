@@ -47,12 +47,12 @@ public class LocaleUserLoader: UserCache {
 //MARK: Helpers
 private extension User {
     var toLocal: LocalUserItem {
-        LocalUserItem(id: self.id)
+        LocalUserItem(id: self.id, name: self.name)
     }
 }
 
 private extension Array where Element == LocalUserItem {
     func toModels() -> [User] {
-        return map{User(id: $0.id)}
+        return map{User(id: $0.id, name: $0.name)}
     }
 }

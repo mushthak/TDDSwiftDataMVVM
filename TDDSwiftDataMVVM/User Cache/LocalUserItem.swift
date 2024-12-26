@@ -8,8 +8,10 @@ import Foundation
 
 public struct LocalUserItem: Equatable {
     public let id: UUID
+    let name: String
     
-    public init(id: UUID) {
+    public init(id: UUID, name: String) {
         self.id = id
+        self.name = name
     }
 }
