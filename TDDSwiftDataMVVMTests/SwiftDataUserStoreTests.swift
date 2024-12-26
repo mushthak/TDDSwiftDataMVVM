@@ -21,6 +21,10 @@ final class ManagedUser {
     var local: LocalUserItem {
         return LocalUserItem(id: id)
     }
+    
+    static func managedUser(from user: LocalUserItem) -> ManagedUser {
+        return ManagedUser(id: user.id)
+    }
 }
 
 @ModelActor
@@ -31,7 +35,9 @@ actor SwiftDataStore: UserStore {
     }
     
     func insert(user: LocalUserItem) async throws {
-        
+        let managedUser = ManagedUser.managedUser(from: user)
+        modelContext.insert(managedUser)
+        try modelContext.save()
     }
     
     func remove(user: LocalUserItem) async throws {
@@ -75,6 +81,19 @@ struct SwiftDataUserStoreTests {
         do {
             let result = try await sut.retrieveAll()
             #expect(result.isEmpty, "Expect the result to be empty but got \(result) instead")
+            
+            try await sut.insert(user: makeUniqueUser().local)
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
+    @Test func test_insert_deliversNoErrorOnNonEmptyCache() async {
+        let sut = await makeSUT()
+        do {
+            try await sut.insert(user: makeUniqueUser().local)
+            let result = try await sut.retrieveAll()
+            #expect(!result.isEmpty, "Expect the result to be non-empty but empty instead")
             
             try await sut.insert(user: makeUniqueUser().local)
         } catch {

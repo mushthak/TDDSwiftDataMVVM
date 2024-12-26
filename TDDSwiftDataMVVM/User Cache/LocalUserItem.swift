@@ -7,7 +7,7 @@
 import Foundation
 
 public struct LocalUserItem: Equatable {
-    let id: UUID
+    public let id: UUID
     
     public init(id: UUID) {
         self.id = id
