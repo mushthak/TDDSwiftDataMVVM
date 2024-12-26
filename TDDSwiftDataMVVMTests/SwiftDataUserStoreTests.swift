@@ -41,13 +41,22 @@ actor SwiftDataStore: UserStore {
     }
     
     func remove(user: LocalUserItem) async throws {
-        
+        guard let managedUser = try findManagedUser(for: user.id) else { return }
+        modelContext.delete(managedUser)
+        try modelContext.save()
     }
     
     //MARK: Helpers
     private func findUserCache() throws -> [ManagedUser] {
         let descriptor = FetchDescriptor<ManagedUser>()
         return try modelContext.fetch(descriptor)
+    }
+    
+    private func findManagedUser(for id: UUID) throws -> ManagedUser? {
+        let descriptor = FetchDescriptor<ManagedUser>(
+            predicate: #Predicate { $0.id == id }
+        )
+        return try modelContext.fetch(descriptor).first
     }
 }
 
@@ -128,6 +137,23 @@ struct SwiftDataUserStoreTests {
         do {
             try await sut.insert(user: makeUniqueUser().local)
             try await sut.remove(user: makeUniqueUser().local)
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
+    @Test func test_delete_successfullyRemoveSelectedUserFromCache() async {
+        let sut = await makeSUT()
+        do {
+            let user = makeUniqueUser()
+            try await sut.insert(user: user.local)
+            var result = try await sut.retrieveAll()
+            #expect(!result.isEmpty, "Expect the result to be non-empty but got empty instead")
+            
+            try await sut.remove(user: user.local)
+            result = try await sut.retrieveAll()
+            #expect(result.isEmpty, "Expect the result to be empty but got \(result) instead")
+            
         } catch {
             #expect(Bool(false), "Expect to succeed but got \(error) error instead")
         }
