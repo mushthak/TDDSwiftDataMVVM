@@ -70,6 +70,18 @@ struct SwiftDataUserStoreTests {
         }
     }
     
+    @Test func test_insert_deliversNoErrorOnEmptyCache() async {
+        let sut = await makeSUT()
+        do {
+            let result = try await sut.retrieveAll()
+            #expect(result.isEmpty, "Expect the result to be empty but got \(result) instead")
+            
+            try await sut.insert(user: makeUniqueUser().local)
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
     
     //MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) async -> SwiftDataStore {
