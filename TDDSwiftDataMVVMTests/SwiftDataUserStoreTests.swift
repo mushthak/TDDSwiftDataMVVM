@@ -76,6 +76,19 @@ struct SwiftDataUserStoreTests {
         }
     }
     
+    @Test func test_retrive_deliversFoundValuesOnNonEmptyCache() async {
+        let sut = await makeSUT()
+        do {
+            let user = makeUniqueUser()
+            try await sut.insert(user: user.local)
+            let result = try await sut.retrieveAll()
+            
+            #expect(result == [user.local], "Expect the result to be \(user.model) but got \(result) instead")
+        } catch {
+            #expect(Bool(false), "Expect to succeed but got \(error) error instead")
+        }
+    }
+    
     @Test func test_insert_deliversNoErrorOnEmptyCache() async {
         let sut = await makeSUT()
         do {
