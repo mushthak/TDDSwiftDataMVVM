@@ -4,15 +4,33 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>TDDSwiftDataMVVM.xcscheme_^#shared#^_</key>
+		<key>TDDSwiftDataMVVMCacheIntegrationTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>TDDSwiftDataMVVMCacheIntegrationTests.xcscheme_^#shared#^_</key>
+		<key>TDDSwiftDataMVVMTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>2998E6CB2D216BB000A2B549</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>29FEFB2F2D05FA45008BC0CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>29FEFB392D05FA45008BC0CC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
