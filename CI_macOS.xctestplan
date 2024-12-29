@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "BF6D2B7A-15C5-492A-BA27-CFEC1299CC3E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:TDDSwiftDataMVVM.xcodeproj",
+        "identifier" : "2998E6CB2D216BB000A2B549",
+        "name" : "TDDSwiftDataMVVMCacheIntegrationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:TDDSwiftDataMVVM.xcodeproj",
+        "identifier" : "29FEFB392D05FA45008BC0CC",
+        "name" : "TDDSwiftDataMVVMTests"
+      }
+    }
+  ],
+  "version" : 1
+}
