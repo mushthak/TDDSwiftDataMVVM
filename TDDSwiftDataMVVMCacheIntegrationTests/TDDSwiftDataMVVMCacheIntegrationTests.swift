@@ -46,6 +46,24 @@ struct TDDSwiftDataMVVMCacheIntegrationTests {
         }
     }
     
+    @Test func test_save_appendsItemsSavedOnASeparateInstance() async {
+        do {
+            let sutToPerformFirstSave = makeSUT()
+            let sutToPerformSecondSave = makeSUT()
+            let sutToPerformLoad = makeSUT()
+            let firstUser = makeUniqueUser().model
+            let secondUser = makeUniqueUser().model
+            
+            try await sutToPerformFirstSave.saveUser(user: firstUser)
+            try await sutToPerformSecondSave.saveUser(user: secondUser)
+            
+            let result: [User] = try await sutToPerformLoad.loadUsers()
+            #expect(result == [firstUser, secondUser])
+        } catch {
+            Issue.record("Expected success but got \(error) instead")
+        }
+    }
+    
     //MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocaleUserLoader {
         let store = SwiftDataStore(modelContainer: sharedContainer)
