@@ -1,3 +1,5 @@
+[![CI-macOS](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml/badge.svg)](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml)
+
 # User Stories:
 
 ## 1. Customer requests to see user list
