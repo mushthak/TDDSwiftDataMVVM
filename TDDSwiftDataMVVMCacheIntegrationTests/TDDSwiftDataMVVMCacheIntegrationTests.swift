@@ -10,6 +10,16 @@ import SwiftData
 import TDDSwiftDataMVVM
 
 struct TDDSwiftDataMVVMCacheIntegrationTests {
+    
+    var sharedContainer: ModelContainer
+    
+    init() async throws {
+        let schema = Schema([
+            ManagedUser.self,
+        ])
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        sharedContainer = try! ModelContainer(for: schema, configurations: [config])
+    }
 
     @Test func test_load_deliversNoItemsOnEmptyCache() async {
         do {
@@ -17,18 +27,28 @@ struct TDDSwiftDataMVVMCacheIntegrationTests {
             let result: [User] = try await sut.loadUsers()
             #expect(result.isEmpty)
         } catch  {
-            Issue.record("Expected success but got \(error) intead")
+            Issue.record("Expected success but got \(error) instead")
+        }
+    }
+    
+    @Test func test_load_deliversItemsSavedOnASeperateInstance() async{
+        do {
+            let sutToPerformSave = makeSUT()
+            let sutToPerformLoad = makeSUT()
+            let user = makeUniqueUser().model
+            
+            try await sutToPerformSave.saveUser(user: user)
+            
+            let result: [User] = try await sutToPerformLoad.loadUsers()
+            #expect(result == [user])
+        } catch {
+            Issue.record("Expected success but got \(error) instead")
         }
     }
     
     //MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocaleUserLoader {
-        let schema = Schema([
-            ManagedUser.self,
-        ])
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: schema, configurations: [config])
-        let store = SwiftDataStore(modelContainer: container)
+        let store = SwiftDataStore(modelContainer: sharedContainer)
         let sut = LocaleUserLoader(store: store)
         return sut
     }
