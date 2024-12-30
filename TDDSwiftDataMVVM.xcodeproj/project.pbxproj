@@ -53,6 +53,13 @@
 			);
 			target = 2998E6CB2D216BB000A2B549 /* TDDSwiftDataMVVMCacheIntegrationTests */;
 		};
+		29F42C6A2D21C86500C8F078 /* Exceptions for "TDDSwiftDataMVVMTests" folder in "TDDSwiftDataMVVMViewTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"User Cache/Helpers/SharedTestHelpers.swift",
+			);
+			target = 29F42C592D21A05900C8F078 /* TDDSwiftDataMVVMViewTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,6 +87,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2998E6D72D216D4800A2B549 /* Exceptions for "TDDSwiftDataMVVMTests" folder in "TDDSwiftDataMVVMCacheIntegrationTests" target */,
+				29F42C6A2D21C86500C8F078 /* Exceptions for "TDDSwiftDataMVVMTests" folder in "TDDSwiftDataMVVMViewTests" target */,
 			);
 			path = TDDSwiftDataMVVMTests;
 			sourceTree = "<group>";
