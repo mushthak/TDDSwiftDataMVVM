@@ -7,9 +7,9 @@
 
 import Testing
 import TDDSwiftDataMVVMView
-@testable import TDDSwiftDataMVVM
+import TDDSwiftDataMVVM
 
-struct TDDSwiftDataMVVMViewTests {
+struct UserViewModelAdapterTests {
     @Test func test_map_mapsUsersToUserViewModels() async {
         let usersStub: [User] = [
             makeUniqueUser().model,

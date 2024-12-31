@@ -2,10 +2,9 @@
 //  UserCacheSpy.swift
 //  TDDSwiftDataMVVM
 //
-//  Created by Mushthak Ebrahim on 30/12/24.
+//  Created by Mushthak Ebrahim on 07/01/25.
 //
-
-@testable import TDDSwiftDataMVVM
+import TDDSwiftDataMVVM
 
 
 class UserCacheSpy: UserCache {
