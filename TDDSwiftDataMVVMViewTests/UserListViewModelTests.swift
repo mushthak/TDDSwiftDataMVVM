@@ -58,5 +58,17 @@ struct UserListViewModelTests {
         #expect(sut.users.isEmpty)
         #expect(sut.isEmptyUserMessageVisible)
     }
+    
+    @Test func test_loadUsers_hidePlaceHolderTextOnNonEmptyUsers() async throws {
+        let usersStub: [User] = [
+            makeUniqueUser().model,
+            makeUniqueUser().model,
+        ]
+        let adapter = UserViewModelAdapter(loader: UserCacheSpy(result: .success(usersStub)))
+        let sut = UserListViewModel(userViewModelAdapter: adapter)
+        await sut.loadUsers()
+        #expect(!sut.users.isEmpty)
+        #expect(!sut.isEmptyUserMessageVisible)
+    }
 
 }
