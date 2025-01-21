@@ -10,9 +10,12 @@ import TDDSwiftDataMVVM
 import TDDSwiftDataMVVMView
 
 class UserListViewModel {
-    var users: [UserViewModel] = []
-    
+    //MARK: Dependencies
     let userViewModelAdapter: UserViewModelAdapter
+    
+    //MARK: State
+    var users: [UserViewModel] = []
+    var isEmptyUserMessageVisible: Bool = false
     
     init(userViewModelAdapter: UserViewModelAdapter) {
         self.userViewModelAdapter = userViewModelAdapter
@@ -20,6 +23,7 @@ class UserListViewModel {
     
     func loadUsers() async {
         users = try! await userViewModelAdapter.loadUserViewModels()
+        isEmptyUserMessageVisible = users.isEmpty
     }
 }
 
@@ -44,6 +48,15 @@ struct UserListViewModelTests {
         let sut = UserListViewModel(userViewModelAdapter: adapter)
         await sut.loadUsers()
         #expect(!sut.users.isEmpty)
+    }
+    
+    @Test func test_loadUsers_showPlaceHolderTextOnEmptyUsers() async throws {
+        let usersStub: [User] = []
+        let adapter = UserViewModelAdapter(loader: UserCacheSpy(result: .success(usersStub)))
+        let sut = UserListViewModel(userViewModelAdapter: adapter)
+        await sut.loadUsers()
+        #expect(sut.users.isEmpty)
+        #expect(sut.isEmptyUserMessageVisible)
     }
 
 }
