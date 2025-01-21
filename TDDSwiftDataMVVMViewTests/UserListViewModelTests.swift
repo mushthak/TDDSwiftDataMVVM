@@ -6,18 +6,44 @@
 //
 
 import Testing
+import TDDSwiftDataMVVM
 import TDDSwiftDataMVVMView
 
 class UserListViewModel {
     var users: [UserViewModel] = []
-    init() {}
+    
+    let userViewModelAdapter: UserViewModelAdapter
+    
+    init(userViewModelAdapter: UserViewModelAdapter) {
+        self.userViewModelAdapter = userViewModelAdapter
+    }
+    
+    func loadUsers() async {
+        users = try! await userViewModelAdapter.loadUserViewModels()
+    }
 }
 
 struct UserListViewModelTests {
 
     @Test func test_init_doesNotLoadUsers() async throws {
-        let sut = UserListViewModel()
+        let usersStub: [User] = [
+            makeUniqueUser().model,
+            makeUniqueUser().model,
+        ]
+        let adapter = UserViewModelAdapter(loader: UserCacheSpy(result: .success(usersStub)))
+        let sut = UserListViewModel(userViewModelAdapter: adapter)
         #expect(sut.users.isEmpty)
+    }
+    
+    @Test func test_loadUsers_loadUsersFromAdapter() async throws {
+        let usersStub: [User] = [
+            makeUniqueUser().model,
+            makeUniqueUser().model,
+        ]
+        let adapter = UserViewModelAdapter(loader: UserCacheSpy(result: .success(usersStub)))
+        let sut = UserListViewModel(userViewModelAdapter: adapter)
+        await sut.loadUsers()
+        #expect(!sut.users.isEmpty)
     }
 
 }
