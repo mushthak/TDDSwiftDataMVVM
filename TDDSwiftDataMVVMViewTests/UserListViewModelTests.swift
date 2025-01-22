@@ -17,6 +17,12 @@ class UserListViewModel {
     //MARK: States
     var users: [UserViewModel] = []
     var isEmptyUserMessageVisible: Bool = false
+    var isErrorAlertPresented: Bool = false
+    var errorMessage: String?
+    
+    //MARK: Constants
+    let insertionErrorMsg = "Something went wrong while adding user"
+    let deletionErrorMsg = "Something went wrong with deleting user"
     
     init(userViewModelAdapter: UserViewModelAdapter) {
         self.userViewModelAdapter = userViewModelAdapter
@@ -32,7 +38,10 @@ class UserListViewModel {
             let newUser = try await userViewModelAdapter.saveUser(name: name)
             self.users.append(newUser)
             refreshPlaceHolderText()
-        } catch  {}
+        } catch  {
+            self.isErrorAlertPresented = true
+            self.errorMessage = insertionErrorMsg
+        }
     }
     
     func deleteUser(at index: Int) async {
@@ -124,6 +133,16 @@ struct UserListViewModelTests {
         
         #expect(sut.users.count == 1)
         #expect(!sut.isEmptyUserMessageVisible)
+    }
+    
+    @Test func test_addUser_showInsertionErrorAlertOnInsertionFailure() async throws {
+        let (sut, _) = makeSUT(insertionError: NSError())
+        
+        let newUser = "New User"
+        await sut.addUser(newUser)
+        
+        #expect(sut.isErrorAlertPresented == true)
+        #expect(sut.errorMessage == "Something went wrong while adding user")
     }
     
     @Test func test_deleteUser_removesUserFromListOnSuccessfullDeletion() async throws {
