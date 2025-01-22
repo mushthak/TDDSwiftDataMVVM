@@ -51,9 +51,7 @@ struct UserListViewModelTests {
             makeUniqueUser().model,
             makeUniqueUser().model,
         ]
-        let userCache = UserCacheSpy(result: .success(usersStub))
-        let adapter = UserViewModelAdapter(loader: userCache)
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT(result: .success(usersStub))
         #expect(sut.users.isEmpty)
     }
     
@@ -62,18 +60,13 @@ struct UserListViewModelTests {
             makeUniqueUser().model,
             makeUniqueUser().model,
         ]
-        let userCache = UserCacheSpy(result: .success(usersStub))
-        let adapter = UserViewModelAdapter(loader: userCache)
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT(result: .success(usersStub))
         await sut.loadUsers()
         #expect(!sut.users.isEmpty)
     }
     
     @Test func test_loadUsers_showPlaceHolderTextOnEmptyUsers() async throws {
-        let usersStub: [User] = []
-        let userCache = UserCacheSpy(result: .success(usersStub))
-        let adapter = UserViewModelAdapter(loader: userCache)
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT()
         await sut.loadUsers()
         #expect(sut.users.isEmpty)
         #expect(sut.isEmptyUserMessageVisible)
@@ -84,20 +77,14 @@ struct UserListViewModelTests {
             makeUniqueUser().model,
             makeUniqueUser().model,
         ]
-        let userCache = UserCacheSpy(result: .success(usersStub))
-        let adapter = UserViewModelAdapter(loader: userCache)
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT(result: .success(usersStub))
         await sut.loadUsers()
         #expect(!sut.users.isEmpty)
         #expect(!sut.isEmptyUserMessageVisible)
     }
     
     @Test func test_addUser_updateUserListOnSuccessfullInsertion() async throws {
-        let usersStub: [User] = []
-        let userCache = UserCacheSpy(result: .success(usersStub))
-        let adapter = UserViewModelAdapter(loader: userCache)
-        
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT()
         await sut.loadUsers()
         #expect(sut.users.isEmpty)
         
@@ -108,16 +95,19 @@ struct UserListViewModelTests {
     }
     
     @Test func test_addUser_doesnotUpdateUserListOnInsertionFailure() async throws {
-        let usersStub: [User] = []
-        let userCache = UserCacheSpy(result: .success(usersStub), insertionError: NSError())
-        let adapter = UserViewModelAdapter(loader: userCache)
-        
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = makeSUT(insertionError: NSError())
         
         let newUser = "New User"
         await sut.addUser(newUser)
         
         await sut.loadUsers()
         #expect(sut.users.count == 0)
+    }
+    
+    //MARK: Helpers
+    private func makeSUT(result: Result<[User], Error> = .success([]), insertionError: Error? = nil) -> UserListViewModel {
+        let userCache = UserCacheSpy(result: result, insertionError: insertionError)
+        let adapter = UserViewModelAdapter(loader: userCache)
+        return UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
     }
 }
