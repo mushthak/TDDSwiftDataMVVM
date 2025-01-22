@@ -16,6 +16,7 @@ class UserCacheSpy: UserCache {
     
     enum ReceivedMessage: Equatable {
         case delete(user: User)
+        case insert(name: String)
     }
     
     private(set) var receivedMessages = [ReceivedMessage]()
@@ -31,6 +32,7 @@ class UserCacheSpy: UserCache {
     }
     
     func saveUser(user: User) async throws {
+        receivedMessages.append(.insert(name: user.name))
         guard insertionError == nil  else {
             throw insertionError!
         }

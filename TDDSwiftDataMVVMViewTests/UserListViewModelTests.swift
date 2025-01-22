@@ -13,15 +13,13 @@ import Foundation
 class UserListViewModel {
     //MARK: Dependencies
     let userViewModelAdapter: UserViewModelAdapter
-    let userRepository: UserCache
     
     //MARK: States
     var users: [UserViewModel] = []
     var isEmptyUserMessageVisible: Bool = false
     
-    init(userViewModelAdapter: UserViewModelAdapter, userRepository: UserCache) {
+    init(userViewModelAdapter: UserViewModelAdapter) {
         self.userViewModelAdapter = userViewModelAdapter
-        self.userRepository = userRepository
     }
     
     func loadUsers() async {
@@ -30,9 +28,8 @@ class UserListViewModel {
     }
     
     func addUser(_ name: String) async {
-        let newUser = UserViewModel(id: UUID(), name: name)
         do {
-            try await userRepository.saveUser(user: newUser.toDomainModel)
+            let newUser = try await userViewModelAdapter.saveUser(name: name)
             self.users.append(newUser)
             refreshPlaceHolderText()
         } catch  {}
@@ -42,7 +39,7 @@ class UserListViewModel {
         guard index >= 0 && index < users.count else { return }
         let userToDelete = users[index]
         do {
-            try await userRepository.deleteUser(user: userToDelete.toDomainModel)
+            try await userViewModelAdapter.deleteUser(user: userToDelete)
             self.users.remove(at: index)
             refreshPlaceHolderText()
         } catch  {}
@@ -54,11 +51,7 @@ class UserListViewModel {
     }
 }
 
-private extension UserViewModel {
-    var toDomainModel: User {
-        User.init(id: self.id, name: self.name)
-    }
-}
+
 
 struct UserListViewModelTests {
 
@@ -191,7 +184,7 @@ struct UserListViewModelTests {
     private func makeSUT(result: Result<[User], Error> = .success([]), insertionError: Error? = nil, deletionError: Error? = nil) -> (UserListViewModel, UserCacheSpy) {
         let userCache = UserCacheSpy(result: result, insertionError: insertionError, deletionError: deletionError)
         let adapter = UserViewModelAdapter(loader: userCache)
-        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        let sut = UserListViewModel(userViewModelAdapter: adapter)
         return (sut, userCache)
     }
 }
