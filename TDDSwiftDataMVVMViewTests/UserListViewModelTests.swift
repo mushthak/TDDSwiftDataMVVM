@@ -106,4 +106,18 @@ struct UserListViewModelTests {
         
         #expect(sut.users.count == 1)
     }
+    
+    @Test func test_addUser_doesnotUpdateUserListOnInsertionFailure() async throws {
+        let usersStub: [User] = []
+        let userCache = UserCacheSpy(result: .success(usersStub), insertionError: NSError())
+        let adapter = UserViewModelAdapter(loader: userCache)
+        
+        let sut = UserListViewModel(userViewModelAdapter: adapter, userRepository: userCache)
+        
+        let newUser = "New User"
+        await sut.addUser(newUser)
+        
+        await sut.loadUsers()
+        #expect(sut.users.count == 0)
+    }
 }
