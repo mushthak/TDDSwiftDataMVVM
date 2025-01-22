@@ -10,61 +10,6 @@ import TDDSwiftDataMVVM
 import TDDSwiftDataMVVMView
 import Foundation
 
-class UserListViewModel {
-    //MARK: Dependencies
-    let userViewModelAdapter: UserViewModelAdapter
-    
-    //MARK: States
-    var users: [UserViewModel] = []
-    var isEmptyUserMessageVisible: Bool = false
-    var isErrorAlertPresented: Bool = false
-    var errorMessage: String?
-    
-    //MARK: Constants
-    let insertionErrorMsg = "Something went wrong while adding user"
-    let deletionErrorMsg = "Something went wrong with deleting user"
-    
-    init(userViewModelAdapter: UserViewModelAdapter) {
-        self.userViewModelAdapter = userViewModelAdapter
-    }
-    
-    func loadUsers() async {
-        users = try! await userViewModelAdapter.loadUserViewModels()
-        refreshPlaceHolderText()
-    }
-    
-    func addUser(_ name: String) async {
-        do {
-            let newUser = try await userViewModelAdapter.saveUser(name: name)
-            self.users.append(newUser)
-            refreshPlaceHolderText()
-        } catch  {
-            self.isErrorAlertPresented = true
-            self.errorMessage = insertionErrorMsg
-        }
-    }
-    
-    func deleteUser(at index: Int) async {
-        guard index >= 0 && index < users.count else { return }
-        let userToDelete = users[index]
-        do {
-            try await userViewModelAdapter.deleteUser(user: userToDelete)
-            self.users.remove(at: index)
-            refreshPlaceHolderText()
-        } catch  {
-            self.isErrorAlertPresented = true
-            self.errorMessage = deletionErrorMsg
-        }
-    }
-    
-    //MARK: Helpers
-    private func refreshPlaceHolderText() {
-        isEmptyUserMessageVisible = users.isEmpty
-    }
-}
-
-
-
 struct UserListViewModelTests {
 
     @Test func test_init_doesNotLoadUsers() async throws {
