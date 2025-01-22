@@ -22,6 +22,6 @@ public class UserViewModelAdapter {
 
 private extension Array where Element == User {
     func toViewModels() -> [UserViewModel] {
-        return map{UserViewModel(name: $0.name)}
+        return map{UserViewModel(id: $0.id, name: $0.name)}
     }
 }
