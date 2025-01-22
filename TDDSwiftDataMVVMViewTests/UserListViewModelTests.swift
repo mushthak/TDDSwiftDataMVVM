@@ -51,7 +51,10 @@ class UserListViewModel {
             try await userViewModelAdapter.deleteUser(user: userToDelete)
             self.users.remove(at: index)
             refreshPlaceHolderText()
-        } catch  {}
+        } catch  {
+            self.isErrorAlertPresented = true
+            self.errorMessage = deletionErrorMsg
+        }
     }
     
     //MARK: Helpers
@@ -197,6 +200,17 @@ struct UserListViewModelTests {
         #expect(store.receivedMessages == [.delete(user: userStub)])
         #expect(sut.users.count == 0)
         #expect(sut.isEmptyUserMessageVisible, "Expect empty user message to be visible but it is not")
+    }
+    
+    @Test func test_deleteUser_showDeleteErrorAlertOnDeletionFailure() async throws {
+        let userStub:User = makeUniqueUser().model
+        let (sut, _) = makeSUT(result: .success([userStub]), deletionError: NSError())
+        await sut.loadUsers()
+        
+        await sut.deleteUser(at: 0)
+        
+        #expect(sut.isErrorAlertPresented == true)
+        #expect(sut.errorMessage == "Something went wrong with deleting user")
     }
     
     //MARK: Helpers
