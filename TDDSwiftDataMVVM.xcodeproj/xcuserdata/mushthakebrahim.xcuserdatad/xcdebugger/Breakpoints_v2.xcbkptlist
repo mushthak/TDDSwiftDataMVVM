@@ -14,8 +14,8 @@
             filePath = "TDDSwiftDataMVVMViewTests/UserListViewModelTests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "test_deleteUser_showDeleteErrorAlertOnDeletionFailure()"
             landmarkType = "7">
          </BreakpointContent>

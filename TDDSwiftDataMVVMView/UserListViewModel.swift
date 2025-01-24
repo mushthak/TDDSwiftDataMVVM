@@ -4,19 +4,26 @@
 //
 //  Created by Mushthak Ebrahim on 22/01/25.
 //
+import Observation
 
-
+@Observable
 public class UserListViewModel {
     //MARK: Dependencies
     let userViewModelAdapter: UserViewModelAdapter
     
     //MARK: States
-    public var users: [UserViewModel] = []
-    public var isEmptyUserMessageVisible: Bool = false
-    public var isErrorAlertPresented: Bool = false
-    public var errorMessage: String?
+    private(set) var users: [UserViewModel] = []
+    private(set) var isEmptyUserMessageVisible: Bool = false
+    private(set) var isInsertionErrorAlertPresented: Bool = false
+    private(set) var isDeletionErrorAlertPresented: Bool = false
+    private(set) var errorMessage: String?
+    private(set) var isShowingDialog = false
+    
+    //MARK: Bindings
+    var newName: String = ""
     
     //MARK: Constants
+    let emptyUserMessage = "Press + to add users"
     let insertionErrorMsg = "Something went wrong while adding user"
     let deletionErrorMsg = "Something went wrong with deleting user"
     
@@ -24,23 +31,25 @@ public class UserListViewModel {
         self.userViewModelAdapter = userViewModelAdapter
     }
     
-    public func loadUsers() async {
+    func loadUsers() async {
         users = try! await userViewModelAdapter.loadUserViewModels()
         refreshPlaceHolderText()
     }
     
-    public func addUser(_ name: String) async {
+    func addUser(_ name: String) async {
         do {
             let newUser = try await userViewModelAdapter.saveUser(name: name)
             self.users.append(newUser)
             refreshPlaceHolderText()
+            isShowingDialog = false
+            newName = ""
         } catch  {
-            self.isErrorAlertPresented = true
+            self.isInsertionErrorAlertPresented = true
             self.errorMessage = insertionErrorMsg
         }
     }
     
-    public func deleteUser(at index: Int) async {
+    func deleteUser(at index: Int) async {
         guard index >= 0 && index < users.count else { return }
         let userToDelete = users[index]
         do {
@@ -48,9 +57,25 @@ public class UserListViewModel {
             self.users.remove(at: index)
             refreshPlaceHolderText()
         } catch  {
-            self.isErrorAlertPresented = true
+            self.isDeletionErrorAlertPresented = true
             self.errorMessage = deletionErrorMsg
         }
+    }
+    
+    func cancelAddUser() {
+        isShowingDialog = false
+        newName = ""
+        isInsertionErrorAlertPresented = false
+        errorMessage = nil
+    }
+    
+    func showAddUserDialog() {
+        isShowingDialog = true
+    }
+    
+    func dismissDeletionErrorAlert() async {
+        self.isDeletionErrorAlertPresented = false
+        self.errorMessage = nil
     }
     
     //MARK: Helpers

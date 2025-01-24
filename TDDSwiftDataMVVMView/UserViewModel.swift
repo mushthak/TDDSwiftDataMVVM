@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct UserViewModel {
+public struct UserViewModel: Identifiable {
     public let id:UUID
     public let name: String
     

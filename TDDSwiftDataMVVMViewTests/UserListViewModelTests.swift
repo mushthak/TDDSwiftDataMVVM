@@ -7,8 +7,9 @@
 
 import Testing
 import TDDSwiftDataMVVM
-import TDDSwiftDataMVVMView
 import Foundation
+@testable import TDDSwiftDataMVVMView
+
 
 struct UserListViewModelTests {
 
@@ -58,6 +59,9 @@ struct UserListViewModelTests {
         await sut.addUser(newUser)
         
         #expect(sut.users.count == 1)
+        #expect(!sut.isEmptyUserMessageVisible)
+        #expect(!sut.isShowingDialog)
+        #expect(sut.newName.isEmpty)
     }
     
     @Test func test_addUser_doesnotUpdateUserListOnInsertionFailure() async throws {
@@ -89,8 +93,62 @@ struct UserListViewModelTests {
         let newUser = "New User"
         await sut.addUser(newUser)
         
-        #expect(sut.isErrorAlertPresented == true)
+        #expect(sut.isInsertionErrorAlertPresented == true)
         #expect(sut.errorMessage == "Something went wrong while adding user")
+    }
+    
+    @Test func test_addUser_dismissDialogeOnSuccessfullInsertion() async throws {
+        let (sut, _) = makeSUT()
+        sut.showAddUserDialog()
+        
+        let newUser = "New User"
+        await sut.addUser(newUser)
+        
+        #expect(!sut.isShowingDialog)
+    }
+    
+    @Test func test_addUser_resetNewNameBindingOnSuccessfullInsertion() async throws {
+        let (sut, _) = makeSUT()
+        sut.showAddUserDialog()
+        
+        let newUser = "New User"
+        sut.newName = newUser
+        await sut.addUser(newUser)
+        
+        #expect(sut.newName.isEmpty)
+    }
+    
+    @Test func test_showAddUserDialogEnableDialog() {
+        let (sut, _) = makeSUT()
+        
+        sut.showAddUserDialog()
+        
+        #expect(sut.isShowingDialog)
+    }
+    
+    @Test func test_cancelAddUser_dismissAndResetNewNameBinding() {
+        let (sut, _) = makeSUT()
+        sut.showAddUserDialog()
+        sut.newName = "A name"
+        
+        sut.cancelAddUser()
+        
+        #expect(!sut.isShowingDialog)
+        #expect(sut.newName.isEmpty)
+    }
+    
+    @Test func test_addUserDismissal_clearsInsertionErrorState() async throws {
+        let (sut, _) = makeSUT(insertionError: NSError())
+        
+        let newUser = "New User"
+        await sut.addUser(newUser)
+        
+        #expect(sut.isInsertionErrorAlertPresented == true)
+        #expect(sut.errorMessage == "Something went wrong while adding user")
+        
+        sut.cancelAddUser()
+        #expect(sut.isInsertionErrorAlertPresented == false)
+        #expect(sut.errorMessage == nil)
     }
     
     @Test func test_deleteUser_removesUserFromListOnSuccessfullDeletion() async throws {
@@ -154,8 +212,23 @@ struct UserListViewModelTests {
         
         await sut.deleteUser(at: 0)
         
-        #expect(sut.isErrorAlertPresented == true)
+        #expect(sut.isDeletionErrorAlertPresented == true)
         #expect(sut.errorMessage == "Something went wrong with deleting user")
+    }
+    
+    @Test func test_dismissDeletionErrorAlert_clearsDeletionError() async {
+        let userStub:User = makeUniqueUser().model
+        let (sut, _) = makeSUT(result: .success([userStub]), deletionError: NSError())
+        await sut.loadUsers()
+        
+        await sut.deleteUser(at: 0)
+        #expect(sut.isDeletionErrorAlertPresented == true)
+        #expect(sut.errorMessage == "Something went wrong with deleting user")
+        
+        await sut.dismissDeletionErrorAlert()
+        
+        #expect(sut.isDeletionErrorAlertPresented == false)
+        #expect(sut.errorMessage == nil)
     }
     
     //MARK: Helpers
