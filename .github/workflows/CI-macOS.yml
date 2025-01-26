@@ -30,4 +30,4 @@ jobs:
       run: /usr/bin/xcodebuild -version
       
     - name: Build and Test
-      run: xcodebuild -scheme "CI_macOS" clean build test -project TDDSwiftDataMVVM.xcodeproj -testPlan CI_macOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -sdk macosx -destination "platform=macOS" ONLY_ACTIVE_ARCH=YES
+      run: xcodebuild -scheme "CI_macOS" clean build test -project TDDSwiftDataMVVM/TDDSwiftDataMVVM.xcodeproj -testPlan CI_macOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -sdk macosx -destination "platform=macOS" ONLY_ACTIVE_ARCH=YES
