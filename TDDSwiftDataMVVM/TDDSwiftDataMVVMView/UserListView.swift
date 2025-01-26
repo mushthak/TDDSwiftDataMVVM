@@ -8,12 +8,16 @@
 import SwiftUI
 import TDDSwiftDataMVVM
 
-struct UserListView: View {
+public struct UserListView: View {
     
     //MARK: Dependencies
     @State var viewModel: UserListViewModel
     
-    var body: some View {
+    public init(viewModel: UserListViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    public var body: some View {
         
         NavigationView {
             List {
