@@ -1,4 +1,5 @@
 [![CI-macOS](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml/badge.svg)](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml)
+[![CI-iOS](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-iOS.yml/badge.svg)](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-iOS.yml)
 
 # TDDSwiftDataMVVM
 
