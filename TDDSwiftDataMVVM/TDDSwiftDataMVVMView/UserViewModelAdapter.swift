@@ -15,17 +15,20 @@ public class UserViewModelAdapter {
         self.loader = loader
     }
     
+    @MainActor
     public func loadUserViewModels() async throws -> [UserViewModel] {
         let result = try await loader.loadUsers()
         return result.toViewModels()
     }
     
+    @MainActor
     public func saveUser(name: String) async throws -> UserViewModel {
         let newUser = UserViewModel(id: UUID(), name: name)
         try await loader.saveUser(user: newUser.toDomainModel)
         return newUser
     }
     
+    @MainActor
     public func deleteUser(user: UserViewModel) async throws {
         try await loader.deleteUser(user: user.toDomainModel)
     }

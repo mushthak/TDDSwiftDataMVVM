@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct LocalUserItem: Equatable {
+public struct LocalUserItem: Equatable, Sendable {
     public let id: UUID
     let name: String
     

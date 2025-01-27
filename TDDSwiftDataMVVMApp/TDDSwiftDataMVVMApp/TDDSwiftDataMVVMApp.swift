@@ -19,6 +19,7 @@ struct TDDSwiftDataMVVMApp: App {
     }
 }
 
+@MainActor
 struct CompositionRoot {
     static let schema = Schema([
         ManagedUser.self,

@@ -7,7 +7,8 @@
 import TDDSwiftDataMVVM
 
 
-class UserCacheSpy: UserCache {
+@MainActor
+final class UserCacheSpy: UserCache {
     
     private var result: Result<[User], Error>
    

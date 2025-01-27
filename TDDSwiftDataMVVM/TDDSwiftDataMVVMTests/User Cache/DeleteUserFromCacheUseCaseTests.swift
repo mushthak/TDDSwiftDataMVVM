@@ -8,6 +8,7 @@
 import Testing
 import TDDSwiftDataMVVM
 
+@MainActor
 struct DeleteUserFromCacheUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async {

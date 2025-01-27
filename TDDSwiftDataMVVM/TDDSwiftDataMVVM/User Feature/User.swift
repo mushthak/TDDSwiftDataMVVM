@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct User: Equatable {
+public struct User: Equatable, Sendable {
     public let id: UUID
     public let name: String
     

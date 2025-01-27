@@ -9,6 +9,7 @@ import Foundation
 import Testing
 import TDDSwiftDataMVVM
 
+@MainActor
 struct CacheUserUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {

@@ -10,6 +10,7 @@ import TDDSwiftDataMVVMView
 import TDDSwiftDataMVVM
 import Foundation
 
+@MainActor
 struct UserViewModelAdapterTests {
     @Test func test_map_mapsUsersToUserViewModels() async {
         let usersStub: [User] = [

@@ -10,7 +10,7 @@ import TDDSwiftDataMVVM
 import Foundation
 @testable import TDDSwiftDataMVVMView
 
-
+@MainActor
 struct UserListViewModelTests {
 
     @Test func test_init_doesNotLoadUsers() async throws {

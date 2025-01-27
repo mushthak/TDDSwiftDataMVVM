@@ -6,7 +6,7 @@
 //
 
 //MARK: UserLoader
-public class LocaleUserLoader: UserCache {
+public final class LocaleUserLoader: UserCache {
     public let store: UserStore
     
     public enum Error: Swift.Error {

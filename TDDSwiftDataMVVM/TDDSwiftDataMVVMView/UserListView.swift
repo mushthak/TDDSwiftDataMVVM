@@ -164,8 +164,9 @@ extension View {
 
 #if DEBUG
 private struct PreviewHelper {
-    static let userListViewModelPreview: UserListViewModel = {
-        class PreviewCache: UserCache {
+    @MainActor static let userListViewModelPreview: UserListViewModel = {
+        @MainActor
+        final class PreviewCache: UserCache {
             var users: [User] = [User(id: UUID(), name: "Mush")]
             
             func loadUsers() async throws -> [User] {

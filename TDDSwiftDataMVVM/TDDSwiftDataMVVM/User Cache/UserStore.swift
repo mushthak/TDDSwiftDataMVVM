@@ -6,7 +6,7 @@
 //
 
 
-public protocol UserStore {
+public protocol UserStore: Sendable {
     func retrieveAll() async throws -> [LocalUserItem]
     func insert(user: LocalUserItem) async throws
     func remove(user: LocalUserItem) async throws

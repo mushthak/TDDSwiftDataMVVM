@@ -6,7 +6,8 @@
 //
 import TDDSwiftDataMVVM
 
-class UserStoreSpy: UserStore {
+@MainActor
+final class UserStoreSpy: UserStore {
     
     enum ReceivedMessage: Equatable {
         case retrieve
