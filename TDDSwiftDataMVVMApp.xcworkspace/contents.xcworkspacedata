@@ -7,4 +7,7 @@
    <FileRef
       location = "container:TDDSwiftDataMVVMApp/TDDSwiftDataMVVMApp.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:TDDSwiftDataMVVM/CI_iOS.xctestplan">
+   </FileRef>
 </Workspace>
