@@ -1,5 +1,24 @@
 [![CI-macOS](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml/badge.svg)](https://github.com/mushthak/TDDSwiftDataMVVM/actions/workflows/CI-macOS.yml)
 
+# TDDSwiftDataMVVM
+
+## Application Overview
+
+TDDSwiftDataMVVM is an iOS application that demonstrates the use of Test-Driven Development (TDD) with the Model-View-ViewModel (MVVM) architecture pattern. The application is built using Swift and leverages SwiftUI for the user interface. It showcases best practices for building maintainable and testable iOS applications.
+
+### Features
+
+- **MVVM Architecture**: Separation of concerns by dividing the application into Model, View, and ViewModel layers.
+- **Test-Driven Development**: Writing tests before implementing the actual functionality to ensure code quality and reliability.
+- **SwiftUI**: Modern declarative framework for building user interfaces across all Apple platforms.
+- **Swift Data**: Persistent storage for managing the application's data model.
+- **Unit Testing**: Comprehensive unit tests to validate the functionality of the ViewModels and Models.
+
+
+### License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
 # User Stories:
 
 ## 1. Customer requests to see user list
