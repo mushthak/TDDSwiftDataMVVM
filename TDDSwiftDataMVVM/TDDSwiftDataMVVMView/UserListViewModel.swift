@@ -17,10 +17,14 @@ public class UserListViewModel {
     private(set) var isInsertionErrorAlertPresented: Bool = false
     private(set) var isDeletionErrorAlertPresented: Bool = false
     private(set) var errorMessage: String?
-    private(set) var isShowingDialog = false
     
     //MARK: Bindings
     var newName: String = ""
+    var isShowingDialog = false
+    
+    var isNewNameValid: Bool {
+        return !newName.trimmingCharacters(in: .whitespaces).isEmpty
+    }
     
     //MARK: Constants
     let emptyUserMessage = "Press + to add users"

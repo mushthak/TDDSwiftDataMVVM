@@ -49,54 +49,38 @@ public struct UserListView: View {
         .task {
             await viewModel.loadUsers()
         }
-        .overlay {
-            if viewModel.isShowingDialog {
-                ZStack {
-                    Color.black.opacity(0.4).ignoresSafeArea()
-                    VStack(spacing: 16) {
-                        Text("Add User")
-                            .font(.headline)
-                            .padding()
-                        
+        .sheet(isPresented: $viewModel.isShowingDialog, onDismiss: viewModel.cancelAddUser) {
+            NavigationStack {
+                Form {
+                    Section(header: Text("Name")) {
                         TextField("Enter name", text: $viewModel.newName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.horizontal)
-                        
-                        HStack {
-                            Button("Cancel") {
-                                viewModel.cancelAddUser()
-                            }
-                            .padding()
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(8)
-                            
-                            Button("Save") {
-                                Task {
-                                    await viewModel.addUser(viewModel.newName)
-                                }
-                            }
-                            .padding()
-                            .background(viewModel.newName.isEmpty ? Color.gray : Color.blue)
-                            .cornerRadius(8)
-                            .foregroundColor(.white)
-                            .disabled(viewModel.newName.isEmpty)
-                        }
-                        
                         if viewModel.isInsertionErrorAlertPresented {
                             Text("\(viewModel.errorMessage ?? "")")
                                 .font(.caption2)
                                 .foregroundStyle(.red)
-                            
                         }
                     }
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(radius: 10)
-                    .frame(maxWidth: 300)
+                }
+                .navigationTitle("Add User")
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Dismiss") {
+                            viewModel.cancelAddUser()
+                        }
+                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        Button("Done") {
+                            Task {
+                                await viewModel.addUser(viewModel.newName)
+                            }
+                        }
+                        .disabled(!viewModel.isNewNameValid)
+                    }
                 }
             }
-            
+            .presentationDetents([.medium, .large])
+        }
+        .overlay {
             if viewModel.isDeletionErrorAlertPresented {
                 ZStack {
                     Color.black.opacity(0.4).ignoresSafeArea()
@@ -111,14 +95,14 @@ public struct UserListView: View {
                                 await viewModel.dismissDeletionErrorAlert()
                             }
                         }.tint(.red)
-                        .padding()
-                            
+                            .padding()
+                        
                     }
                     .padding()
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .shadow(radius: 10)
-                        .frame(maxWidth: 400)
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .frame(maxWidth: 400)
                 }
             }
         }
