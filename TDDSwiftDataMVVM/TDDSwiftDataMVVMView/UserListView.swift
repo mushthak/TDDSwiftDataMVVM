@@ -80,32 +80,21 @@ public struct UserListView: View {
             }
             .presentationDetents([.medium, .large])
         }
-        .overlay {
-            if viewModel.isDeletionErrorAlertPresented {
-                ZStack {
-                    Color.black.opacity(0.4).ignoresSafeArea()
-                    VStack {
-                        Text("Deletion Error")
-                            .font(.headline)
-                            .padding()
-                        Text("\(viewModel.errorMessage ?? "")")
-                            .font(.callout)
-                        Button("Dismiss") {
-                            Task {
-                                await viewModel.dismissDeletionErrorAlert()
-                            }
-                        }.tint(.red)
-                            .padding()
-                        
+        .alert(
+                    "Deletion Error",
+                    isPresented: $viewModel.isDeletionErrorAlertPresented,
+                    presenting: viewModel.errorMessage
+                ) { details in
+                    Button(role: .cancel) {
+                        Task {
+                            await viewModel.dismissDeletionErrorAlert()
+                        }
+                    } label: {
+                        Text("Ok")
                     }
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(radius: 10)
-                    .frame(maxWidth: 400)
+                } message: { details in
+                    Text(details)
                 }
-            }
-        }
     }
 }
 

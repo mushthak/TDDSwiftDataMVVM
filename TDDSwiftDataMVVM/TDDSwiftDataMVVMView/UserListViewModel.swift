@@ -15,7 +15,7 @@ public class UserListViewModel {
     private(set) var users: [UserViewModel] = []
     private(set) var isEmptyUserMessageVisible: Bool = false
     private(set) var isInsertionErrorAlertPresented: Bool = false
-    private(set) var isDeletionErrorAlertPresented: Bool = false
+    var isDeletionErrorAlertPresented: Bool = false
     private(set) var errorMessage: String?
     
     //MARK: Bindings
