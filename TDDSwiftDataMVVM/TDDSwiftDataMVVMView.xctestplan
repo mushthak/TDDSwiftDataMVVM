@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "7B184B8F-0D5D-4DC7-AAEE-C61CBBE431C6",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:TDDSwiftDataMVVM.xcodeproj",
+        "identifier" : "29F42C592D21A05900C8F078",
+        "name" : "TDDSwiftDataMVVMViewTests"
+      }
+    }
+  ],
+  "version" : 1
+}
