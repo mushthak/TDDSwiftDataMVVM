@@ -8,12 +8,11 @@
 import Testing
 import TDDSwiftDataMVVM
 
-@MainActor
 struct DeleteUserFromCacheUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async {
         let (_, store) = makeSUT()
-        #expect(store.receivedMessages.isEmpty)
+        #expect(await store.receivedMessages.isEmpty)
     }
     
     @Test func test_deleteUser_requestsDeleteFromStore() async throws {
@@ -21,7 +20,7 @@ struct DeleteUserFromCacheUseCaseTests {
         let user = makeUniqueUser()
         try await sut.deleteUser(user: user.model)
         
-        #expect(store.receivedMessages.contains(.delete(user: user.local)))
+        #expect(await store.receivedMessages.contains(.delete(user: user.local)))
     }
     
     @Test func test_deleteUser_failsOnDeletionError() async {

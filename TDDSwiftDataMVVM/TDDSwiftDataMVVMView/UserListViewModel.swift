@@ -7,7 +7,7 @@
 import Observation
 
 @Observable
-public class UserListViewModel {
+public final class UserListViewModel {
     //MARK: Dependencies
     let userViewModelAdapter: UserViewModelAdapter
     
@@ -35,13 +35,11 @@ public class UserListViewModel {
         self.userViewModelAdapter = userViewModelAdapter
     }
     
-    @MainActor
     func loadUsers() async {
         users = try! await userViewModelAdapter.loadUserViewModels()
         refreshPlaceHolderText()
     }
     
-    @MainActor
     func addUser(_ name: String) async {
         do {
             let newUser = try await userViewModelAdapter.saveUser(name: name)
@@ -55,7 +53,6 @@ public class UserListViewModel {
         }
     }
     
-    @MainActor
     func deleteUser(at index: Int) async {
         guard index >= 0 && index < users.count else { return }
         let userToDelete = users[index]
@@ -80,7 +77,6 @@ public class UserListViewModel {
         isShowingDialog = true
     }
     
-    @MainActor
     func dismissDeletionErrorAlert() async {
         self.isDeletionErrorAlertPresented = false
         self.errorMessage = nil

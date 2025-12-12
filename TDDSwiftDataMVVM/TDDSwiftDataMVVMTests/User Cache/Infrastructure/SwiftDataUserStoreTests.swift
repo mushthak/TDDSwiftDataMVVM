@@ -110,7 +110,7 @@ struct SwiftDataUserStoreTests {
     }
     
     //MARK: Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) async -> SwiftDataStore {
+    @concurrent private func makeSUT(file: StaticString = #file, line: UInt = #line) async -> SwiftDataStore {
         let schema = Schema([
             ManagedUser.self,
         ])

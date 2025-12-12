@@ -6,7 +6,7 @@
 //
 
 
-public protocol UserCache: Sendable {
+public protocol UserCache {
     func loadUsers() async throws -> [User]
     func saveUser(user: User) async throws
     func deleteUser(user: User) async throws

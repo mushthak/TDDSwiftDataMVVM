@@ -8,27 +8,24 @@
 import TDDSwiftDataMVVM
 import Foundation
 
-public class UserViewModelAdapter {
-    let loader: UserCache
+public final class UserViewModelAdapter {
+    public let loader: UserCache
     
     public init(loader: UserCache) {
         self.loader = loader
     }
     
-    @MainActor
     public func loadUserViewModels() async throws -> [UserViewModel] {
         let result = try await loader.loadUsers()
         return result.toViewModels()
     }
     
-    @MainActor
     public func saveUser(name: String) async throws -> UserViewModel {
         let newUser = UserViewModel(id: UUID(), name: name)
         try await loader.saveUser(user: newUser.toDomainModel)
         return newUser
     }
     
-    @MainActor
     public func deleteUser(user: UserViewModel) async throws {
         try await loader.deleteUser(user: user.toDomainModel)
     }

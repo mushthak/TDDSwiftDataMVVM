@@ -60,9 +60,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		296D59622EEAF1340010ECE4 /* TDDSwiftDataMVVMView.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TDDSwiftDataMVVMView.xctestplan; sourceTree = "<group>"; };
 		2998E6CC2D216BB000A2B549 /* TDDSwiftDataMVVMCacheIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDDSwiftDataMVVMCacheIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D687362D2175C9002D7E8C /* CI_macOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CI_macOS.xctestplan; sourceTree = "<group>"; };
+		29E1C0932EEBCDF100FE3643 /* TDDSwiftDataMVVMView.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = TDDSwiftDataMVVMView.xctestplan; sourceTree = "<group>"; };
 		29F42C532D21A05900C8F078 /* TDDSwiftDataMVVMView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TDDSwiftDataMVVMView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F42C5A2D21A05900C8F078 /* TDDSwiftDataMVVMViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDDSwiftDataMVVMViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29FEFB302D05FA45008BC0CC /* TDDSwiftDataMVVM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TDDSwiftDataMVVM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,7 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				29D687362D2175C9002D7E8C /* CI_macOS.xctestplan */,
-				296D59622EEAF1340010ECE4 /* TDDSwiftDataMVVMView.xctestplan */,
+				29E1C0932EEBCDF100FE3643 /* TDDSwiftDataMVVMView.xctestplan */,
 				29FEFB322D05FA45008BC0CC /* TDDSwiftDataMVVM */,
 				29FEFB3E2D05FA45008BC0CC /* TDDSwiftDataMVVMTests */,
 				2998E6CD2D216BB000A2B549 /* TDDSwiftDataMVVMCacheIntegrationTests */,
@@ -552,9 +552,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -590,8 +592,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -610,6 +614,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.musdevpro.TDDSwiftDataMVVMViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -628,6 +633,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.musdevpro.TDDSwiftDataMVVMViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -772,7 +778,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
+				SWIFT_VERSION = 6.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -831,7 +840,10 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_UPCOMING_FEATURE_NONISOLATED_NONSENDING_BY_DEFAULT = YES;
+				SWIFT_VERSION = 6.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

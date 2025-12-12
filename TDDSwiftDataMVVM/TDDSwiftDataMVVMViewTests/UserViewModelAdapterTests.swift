@@ -10,7 +10,6 @@ import TDDSwiftDataMVVMView
 import TDDSwiftDataMVVM
 import Foundation
 
-@MainActor
 struct UserViewModelAdapterTests {
     @Test func test_map_mapsUsersToUserViewModels() async {
         let usersStub: [User] = [
@@ -33,7 +32,7 @@ struct UserViewModelAdapterTests {
             let newUser = "New User"
             let _ = try await sut.saveUser(name: newUser)
             #expect(true, "Expected cache insertion to happen")
-            #expect(store.receivedMessages == [.insert(name: newUser)])
+            #expect(await store.receivedMessages == [.insert(name: newUser)])
         } catch  {
             Issue.record("Expected success but got \(error) instead")
         }
@@ -56,7 +55,7 @@ struct UserViewModelAdapterTests {
         do {
             try await sut.deleteUser(user: UserViewModel(id: userStub.id, name: userStub.name))
             #expect(true, "Expected cache deletion to happen")
-            #expect(store.receivedMessages == [.delete(user: userStub)])
+            #expect(await store.receivedMessages == [.delete(user: userStub)])
         } catch  {
             Issue.record("Expected success but got \(error) instead")
         }

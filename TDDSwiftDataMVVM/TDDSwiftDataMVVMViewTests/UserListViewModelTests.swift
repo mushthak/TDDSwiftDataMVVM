@@ -10,7 +10,6 @@ import TDDSwiftDataMVVM
 import Foundation
 @testable import TDDSwiftDataMVVMView
 
-@MainActor
 struct UserListViewModelTests {
 
     @Test func test_init_doesNotLoadUsers() async throws {
@@ -173,7 +172,7 @@ struct UserListViewModelTests {
         
         await sut.deleteUser(at: 0)
         
-        #expect(store.receivedMessages == [.delete(user: userStub)])
+        #expect(await store.receivedMessages == [.delete(user: userStub)])
         #expect(sut.users.count == 1)
     }
     
@@ -187,7 +186,7 @@ struct UserListViewModelTests {
         
         await sut.deleteUser(at: -1)
         
-        #expect(store.receivedMessages == [])
+        #expect(await store.receivedMessages == [])
         #expect(sut.users.count == 1)
     }
     
@@ -200,7 +199,7 @@ struct UserListViewModelTests {
         
         await sut.deleteUser(at: 0)
         
-        #expect(store.receivedMessages == [.delete(user: userStub)])
+        #expect(await store.receivedMessages == [.delete(user: userStub)])
         #expect(sut.users.count == 0)
         #expect(sut.isEmptyUserMessageVisible, "Expect empty user message to be visible but it is not")
     }

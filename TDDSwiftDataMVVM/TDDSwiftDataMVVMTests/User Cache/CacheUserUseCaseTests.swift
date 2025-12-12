@@ -9,12 +9,11 @@ import Foundation
 import Testing
 import TDDSwiftDataMVVM
 
-@MainActor
 struct CacheUserUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {
         let (_, store) = makeSUT()
-        #expect(store.receivedMessages.isEmpty)
+        #expect(await store.receivedMessages.isEmpty)
     }
     
     @Test func test_saveUser_requestsNewCacheInsertion() async throws {
@@ -22,7 +21,7 @@ struct CacheUserUseCaseTests {
         let user = makeUniqueUser()
         try await sut.saveUser(user: user.model)
         
-        #expect(store.receivedMessages == [.insert(user: user.local)])
+        #expect(await store.receivedMessages == [.insert(user: user.local)])
     }
     
     @Test func test_saveUser_failsOnInsertionError() async {

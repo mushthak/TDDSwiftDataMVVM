@@ -11,7 +11,6 @@ import SwiftData
 import TDDSwiftDataMVVM
 import TDDSwiftDataMVVMView
 
-@MainActor
 struct TDDSwiftDataMVVMAppTests {
 
     @Test func test_compositionRoot_schemaContainsManagedUser() {

@@ -9,12 +9,11 @@ import Testing
 import Foundation
 import TDDSwiftDataMVVM
 
-@MainActor
 struct LoadUserFromCacheUseCaseTests {
     
     @Test func test_init_doesNotMessageStoreUponCreation() async throws {
         let (_, store) = makeSUT()
-        #expect(store.receivedMessages.isEmpty)
+        #expect(await store.receivedMessages.isEmpty)
     }
     
     
@@ -23,7 +22,7 @@ struct LoadUserFromCacheUseCaseTests {
         
         _ = try await sut.loadUsers()
         
-        #expect(store.receivedMessages == [.retrieve])
+        #expect(await store.receivedMessages == [.retrieve])
     }
     
     @Test func test_loadUserTwice_requestCacheRetrievalTwice() async throws {
@@ -32,7 +31,7 @@ struct LoadUserFromCacheUseCaseTests {
         _ = try await sut.loadUsers()
         _ = try await sut.loadUsers()
         
-        #expect(store.receivedMessages == [.retrieve, .retrieve])
+        #expect(await store.receivedMessages == [.retrieve, .retrieve])
     }
     
     @Test func test_loadUser_failsOnRetrievalError() async throws {
